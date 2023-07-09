@@ -47,7 +47,6 @@ void disabled() {}
  */
 void competition_initialize() {}
 
-
 void autonomous() {}
 
 void opcontrol() {
@@ -55,8 +54,9 @@ void opcontrol() {
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 
+	okapi::Rate rate;
+
 	while (true) {
-		okapi:: Rate rate;
 		rate.delay(100_Hz); //delay to prevent cpu from overloading and therefore lagging and freezing 
 	}  
 }
