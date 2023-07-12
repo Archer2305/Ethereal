@@ -57,6 +57,8 @@ void opcontrol() {
 	okapi::Rate rate;
 
 	while (true) {
+        updateDrive();
+
 		rate.delay(100_Hz); //delay to prevent cpu from overloading and therefore lagging and freezing 
 	}  
 }
