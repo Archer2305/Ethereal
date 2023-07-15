@@ -1,19 +1,22 @@
-#include "intake.hpp"
+#include "main.h"
+#include "intake.hpp"   //move to main.h
 
-okapi::motor intake(0, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+#define INTAKE_PORT     -1          //move ports into ports file
+
+okapi::Motor intake(INTAKE_PORT, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
  
 enum {
-    INTAKE_STOP = 0,
-    INTAKE_SPINNING,
-    OUTTAKE_STOP,
-    OUTTAKE_SPINNING
+    INTAKE_STANDBY = 0,
+    INTAKE_ACTIVE,
+    OUTTAKE_STANDBY,
+    OUTTAKE_ACTIVE
 };
 
-static volatile atomic_int intake_state = INTAKE_STOP;                  //uhh state machine
-static atomic_int avg_intake_watt = -1;                        //*10, fill experimental avg value
+static volatile std::atomic<int> intake_state = INTAKE_STANDBY;                  //uhh state machine
+static std::atomic<int> avg_intake_watt = -1;                        //*10, fill experimental avg value
 
-bool set_dir_intake() {}
-bool set_dir_outtake() {}
+void set_dir_intake() {}
+void set_dir_outtake() {}
 
 void intake_until_ingested() {          //async
 

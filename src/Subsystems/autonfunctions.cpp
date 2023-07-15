@@ -1,4 +1,5 @@
-#include "main.cpp"
+#include "main.h"
+#include "drive.hpp"
 
 #define TO_DEG  (180 / 3.14159265359)
 
@@ -103,7 +104,7 @@ void turnToAngle(double targetAngle) {
         }
 
         double vel = rotatePID.step(initAngle);
-        drive->getModel()->tank(vel * TS, -vel * TS);
+        drive->getModel()->tank(vel, -vel);
 
         pros::delay(20);
     }
