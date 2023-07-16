@@ -1,31 +1,12 @@
 #include "main.h"
 #include "drive.hpp"
+#include "autonfunctions.hpp"
 
 #define TO_DEG  (180 / 3.14159265359)
 
 okapi::IMU inertial = okapi::IMU(IMU_PORT);
 
 //----------------------------functions---------------------------
-
-//remap to -180 to 180
-static inline double remap(double d) {
-    if (d == 0) {
-        return 0;
-    }
-
-    double fp = d - (int)d;
-    int id = (int)d;
-
-    if (d > 0) {
-        id = id % 360;
-    } else {
-        id = (-id % 360) * -1 + 360;
-    }
-
-    d = id + fp;
-    return (d <= 180) ? d : (d - 360);
-}
-
 static double normalize(double d) {      //input[0,360] -> output[-180,180]
     if (d > 180)
         d -= 360;
