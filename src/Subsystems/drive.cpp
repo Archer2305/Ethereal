@@ -1,5 +1,4 @@
 #include "main.h"
-#include "drive.hpp"  
 
 #include "okapi/api/odometry/point.hpp"
 
@@ -11,21 +10,21 @@ using namespace okapi;
 
 //---------------------------------Group-definitions---------------------------------------
 
-Motor rightFront(1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor rightTop(1, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor rightBottom(1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor rightFront(RIGHT_FRONT, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor rightMiddle(RIGHT_MIDDLE, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor rightBack(RIGHT_BACK, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
-Motor leftFront(1, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor leftTop(1, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor leftBottom(1, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor leftFront(LEFT_FRONT, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor leftMiddle(LEFT_MIDDLE, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor leftBack(LEFT_BACK, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
-MotorGroup leftDrive ({leftFront, leftTop, leftBottom}); 
-MotorGroup rightDrive({rightFront, rightTop, rightBottom});
+MotorGroup leftDrive({leftFront, leftMiddle, leftBack}); 
+MotorGroup rightDrive({rightFront, rightMiddle, rightBack});
 
-MotorGroup Drive({rightFront, rightTop, rightBottom, leftFront, leftTop, leftBottom});
+MotorGroup Drive({rightFront, rightMiddle, rightBack, leftFront, leftMiddle, leftBack});
 
 std::shared_ptr<OdomChassisController> drive = ChassisControllerBuilder()
-    .withMotors({leftFront, leftTop, leftBottom}, {rightFront, rightTop, rightBottom}) 
+    .withMotors({leftFront, leftMiddle, leftBack}, {rightFront, rightMiddle, rightBack}) 
     .withDimensions(AbstractMotor::gearset::blue, {{WHEEL_SIZE, DRIVE_WIDTH}, okapi::imev5BlueTPR * (GEAR_RATIO)})
     .withOdometry() 
     .buildOdometry();

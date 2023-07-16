@@ -3,7 +3,7 @@
 
 #define TO_DEG  (180 / 3.14159265359)
 
-okapi::IMU inertial = IMU(-1);
+okapi::IMU inertial = okapi::IMU(IMU_PORT);
 
 //----------------------------functions---------------------------
 
@@ -26,7 +26,7 @@ static inline double remap(double d) {
     return (d <= 180) ? d : (d - 360);
 }
 
-static inline double normalize(double d) {      //input[0,360] -> output[-180,180]
+static double normalize(double d) {      //input[0,360] -> output[-180,180]
     if (d > 180)
         d -= 360;
     return d;
@@ -34,7 +34,7 @@ static inline double normalize(double d) {      //input[0,360] -> output[-180,18
 
 //------------
 
-inline double to_IMU_heading(double d) {
+double to_IMU_heading(double d) {
     return normalize(90 - d);
 }
 

@@ -1,11 +1,6 @@
-#include "main.h"
+#ifndef __GLOBALS_HPP__
+#define __GLOBALS_HPP__
 
-//---------ports----------
+extern okapi::Controller controller;
 
-//------------------------
-
-using namespace okapi;
-
-extern Controller controller;
-
-
+#endif

@@ -3,7 +3,7 @@
 
 #define INTAKE_PORT     -1          //move ports into ports file
 
-okapi::Motor intake(INTAKE_PORT, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+okapi::Motor intake(INTAKE_PORT, false, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::degrees);
  
 enum {
     INTAKE_STANDBY = 0,
@@ -12,24 +12,18 @@ enum {
     OUTTAKE_ACTIVE
 };
 
-static volatile std::atomic<int> intake_state = INTAKE_STANDBY;                  //uhh state machine
-static std::atomic<int> avg_intake_watt = -1;                        //*10, fill experimental avg value
+static volatile std::atomic<int> intake_state = INTAKE_STANDBY;                 //uhh state machine
+static std::atomic<long> avg_intake_watt = -1;                                   //*10, fill experimental avg value
 
-void set_dir_intake() {}
+void set_dir_intake() {}                //static
 void set_dir_outtake() {}
 
-void intake_until_ingested() {          //async
+void intake_until_ingested() {}          //async
 
-}
+void outtake_until_empty() {}            //async
 
-void outtake_until_empty() {            //async
-
-}
-
-void updateIntake_manual() {            //async
+void updateIntake_manualOp() {}            //async
     
-}
-
 void updateIntake() {                   //threaded
      //intake direction based on state 
 } 
