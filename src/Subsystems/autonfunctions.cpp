@@ -12,8 +12,7 @@ static double normalize(double d) {      //input[0,360] -> output[-180,180]
         d -= 360;
     return d;
 }
-
-//------------
+//--------------
 
 double to_IMU_heading(double d) {
     return normalize(90 - d);
@@ -126,9 +125,9 @@ void driveToPoint(double posX, double posY, double speed=0.8, bool backward=fals
     targetAngle = to_IMU_heading(normalize(targetAngle));
 
     if (backward) {                    //If driving intake backward 
-        if (targetAngle >= 0){
+        if (targetAngle >= 0) {
             targetAngle += -180;
-        } else if (targetAngle < 0){
+        } else if (targetAngle < 0) {
             targetAngle += 180;
         }
     }
@@ -136,3 +135,13 @@ void driveToPoint(double posX, double posY, double speed=0.8, bool backward=fals
     turnToAngle(targetAngle);
     drive_dis((backward ? -1 : 1) * distance, speed);
 }
+
+#if 0
+// r < 0 (left), r > 0 (right)
+double drive_arc(double r, double theta, double scalar=0.8) {     //returns distance
+    double sd = abs(r) - (DRIVE_WIDTH / 2);
+    double ld = abs(r) + (DRIVE_WIDTH / 2);
+
+    if (r > 0)
+}
+#endif

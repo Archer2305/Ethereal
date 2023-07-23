@@ -2,10 +2,6 @@
 
 #include "okapi/api/odometry/point.hpp"
 
-#define WHEEL_SIZE      4.125_in
-#define DRIVE_WIDTH     0_in
-#define GEAR_RATIO      ((double)1 / 1)
-
 using namespace okapi;
 
 //---------------------------------Group-definitions---------------------------------------
