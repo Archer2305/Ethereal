@@ -53,12 +53,12 @@ void autonomous() {}
 
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-
 	okapi::Rate rate;
 
 	while (true) {
-        updateDrive();
-
+        //updateDrive();
+        updateIntake();
+        
 		rate.delay(100_Hz); //delay to prevent cpu from overloading and therefore lagging and freezing 
 	}  
 }

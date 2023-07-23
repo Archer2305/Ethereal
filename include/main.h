@@ -85,5 +85,6 @@ void opcontrol(void);
 #include "./Subsystems/globals.hpp"
 #include "./Subsystems/drive.hpp"
 #include "./Subsystems/ports.hpp"
+#include "./Subsystems/intake.hpp"
 
 #endif  // _PROS_MAIN_H_

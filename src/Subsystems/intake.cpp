@@ -3,12 +3,35 @@
 #include <list>
 #include <mutex>
 
-#define BUTTON_RESET        //controller button macros
-#define BUTTON_INTAKE
-#define BUTTON_OUTAKE
+#define BUTTON_RESET        -1
+#define BUTTON_INTAKE       okapi::ControllerDigital::L1   //mv to globals
+#define BUTTON_OUTTAKE       okapi::ControllerDigital::R1
 
 okapi::Motor intake(INTAKE_PORT, false, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::degrees);
- 
+
+//static volatile std::atomic<int> intake_state = INTAKE_STANDBY;                 //uhh state machine
+volatile bool triball_detected = false;                         //for other version
+
+static std::atomic<long> avg_intake_watt = -1;                                   //*10, experimental value, testing only
+constexpr double mean_intake_watt = -1;
+
+void updateIntake() {       //testing
+    printf("motor efficiency: %lf, motor wattage: %lf, motor voltage: %ld\n", 
+            intake.getEfficiency(), intake.getPower(), intake.getVoltage());
+    
+    if (controller.getDigital(BUTTON_INTAKE) == 1) {
+        intake.moveVelocity(-600); 
+    }
+    if (controller.getDigital(BUTTON_INTAKE) == 1) {
+        intake.moveVelocity(600); 
+    }
+    if (controller.getDigital(BUTTON_INTAKE) == 0 && (controller.getDigital(BUTTON_OUTTAKE) == 0)){
+        intake.moveVelocity(0); 
+    }
+}
+
+
+#if 0 
 enum {              //intake states
     INTAKE_STANDBY = 0,
     INTAKE_ACTIVE,
@@ -25,11 +48,6 @@ enum {              //messages
 static std::list<int> intake_messages;
 static std::atomic<int> intake_messages_count;
 
-static volatile std::atomic<int> intake_state = INTAKE_STANDBY;                 //uhh state machine
-volatile bool triball_detected = false;                         //for other version
-
-static std::atomic<long> avg_intake_watt = -1;                                   //*10, experimental value, testing only
-constexpr double mean_intake_watt = -1;
 
 void append_message(int button_message) {                    //appends to message box
      
@@ -64,11 +82,12 @@ void updateIntake_button_dispatch() {       //checks buttons, called repeatedly 
 void update_intake() {} //motor + state machine
 
 //less complicated version embedded in opcontrol, intake would stop while it has a triball, outtake works normally 
-void updateIntake() {
+void updateIntake_manual_op() {
     //read buttons
     //check intake is true
     //
 }
+
 
 #if 0
 void set_dir_intake() {}                //static
@@ -90,4 +109,5 @@ void updateIntake() {                   //threaded
     //if (button pressed in 
         //set_intake dir in + active    
 } 
+#endif
 #endif
