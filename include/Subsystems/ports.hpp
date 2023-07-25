@@ -12,11 +12,16 @@
 //-------------------------
 
 //----------intake----------
-#define INTAKE_PORT     -1
+#define INTAKE_PORT     10
 //--------------------------
 
 //---------sensors----------
-#define IMU_PORT        -1
+#define IMU_PORT        16
 //--------------------------
+
+//---------buttons--------------------------------------
+#define BUTTON_INTAKE       okapi::ControllerDigital::L1
+#define BUTTON_OUTTAKE      okapi::ControllerDigital::L2
+//-------------------------------------------------------
 
 #endif 
