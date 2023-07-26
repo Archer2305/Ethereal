@@ -87,5 +87,7 @@ void opcontrol(void);
 #include "./Subsystems/ports.hpp"
 #include "./Subsystems/intake.hpp"
 #include "./Subsystems/autonmech.hpp"
+#include "./Subsystems/autonfunctions.hpp"
+#include "./Subsystems/autons.hpp"
 
 #endif  // _PROS_MAIN_H_

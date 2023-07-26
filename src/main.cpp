@@ -29,6 +29,9 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 		
 	pros::lcd::register_btn1_cb(on_center_button);
+
+	pros::lcd::register_btn0_cb(leftPressed);
+	pros::lcd::register_btn0_cb(rightPressed);
 }
 
 /**
@@ -49,7 +52,11 @@ void disabled() {}
  */
 void competition_initialize() {}
 
-void autonomous() {}
+
+
+void autonomous() {
+	autons();
+}
 
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
