@@ -89,5 +89,6 @@ void opcontrol(void);
 #include "./Subsystems/autonmech.hpp"
 #include "./Subsystems/autonfunctions.hpp"
 #include "./Subsystems/autons.hpp"
+#include "./Subsystems/slapper.hpp"
 
 #endif  // _PROS_MAIN_H_

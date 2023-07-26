@@ -7,11 +7,11 @@ using namespace okapi;
 //---------------------------------Group-definitions---------------------------------------
 
 Motor rightFront(RIGHT_FRONT, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor rightMiddle(RIGHT_MIDDLE, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor rightMiddle(RIGHT_MIDDLE, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor rightBack(RIGHT_BACK, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 Motor leftFront(LEFT_FRONT, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
-Motor leftMiddle(LEFT_MIDDLE, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor leftMiddle(LEFT_MIDDLE, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 Motor leftBack(LEFT_BACK, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 MotorGroup leftDrive({leftFront, leftMiddle, leftBack}); 

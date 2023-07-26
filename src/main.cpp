@@ -31,7 +31,7 @@ void initialize() {
 	pros::lcd::register_btn1_cb(on_center_button);
 
 	pros::lcd::register_btn0_cb(leftPressed);
-	pros::lcd::register_btn0_cb(rightPressed);
+	pros::lcd::register_btn2_cb(rightPressed);
 }
 
 /**
@@ -66,6 +66,7 @@ void opcontrol() {
         updateDrive();
         updateIntake();
         update_auton_mech();
+		updateSlapper();
         
 		rate.delay(100_Hz); //delay to prevent cpu from overloading and therefore lagging and freezing 
 	}  
