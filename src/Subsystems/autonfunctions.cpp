@@ -2,6 +2,8 @@
 #include "drive.hpp"
 #include "autonfunctions.hpp"
 
+#include <climits>
+
 #define TO_DEG  (180 / 3.14159265359)
 
 okapi::IMU inertial = okapi::IMU(IMU_PORT);
@@ -135,6 +137,50 @@ void driveToPoint(double posX, double posY, double speed=0.8, bool backward=fals
     turnToAngle(targetAngle);
     drive_dis((backward ? -1 : 1) * distance, speed);
 }
+#if 0
+static double cal_t_angle(double tx, double ty) {
+    double dx = tx - chassis->getState().x.convert(okapi::foot);
+    double dy = ty - chassis->getState().y.convert(okapi::foot);
+ 
+    if (!dx && !dy) {
+        return 0;
+    }
+
+    double target_angle;
+
+    if (dx == 0) {
+        target_angle = (dy > 0) ? 90 : -90;
+    } else if (dx > 0) {
+        target_angle = atan(dy/dx) * TO_DEG;
+    } else if (dx < 0) {
+        target_angle = 180 + (atan(dy/dx)) * TO_DEG;
+    }
+
+    targetAngle = to_IMU_heading(normalize(targetAngle));
+    
+    return target_angle; 
+}
+
+void j_curve(double tx, double ty, double turn_scalar) {
+    okapi::IterativePosPIDController forwardPID = 
+                okapi::IterativeControllerFactory::posPID(1, 1, 1);
+    okapi::IterativePosPIDController turnPID = 
+                okapi::IterativeControllerFactory::posPID(1, 1, 1);
+   
+    double dx = tx - chassis->getState().x.convert(okapi::foot);
+    double dy = ty - chassis->getState().y.convert(okapi::foot);
+
+    double d_dis = sqrt(dx * dx + dy * dy);
+    forwardPID.setTarget(d_dis);
+
+    turnPID.setTarget(cal_t_angle(tx, ty));
+
+    while (d_dis >= 0.1 
+     
+#endif
+    
+    
+    
 
 #if 0
 // r < 0 (left), r > 0 (right)

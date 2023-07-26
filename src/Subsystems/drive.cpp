@@ -38,18 +38,11 @@ void print_cur_state() {
 }
 
 void updateDrive() {
-    pros::lcd::set_text(1, std::to_string(drive->getState().x.convert(okapi::foot))); 
-    pros::lcd::set_text(2, std::to_string(drive->getState().y.convert(okapi::foot)));
+    pros::lcd::set_text(1, std::to_string(drive->getState().y.convert(okapi::foot))); 
+    pros::lcd::set_text(2, std::to_string(drive->getState().x.convert(okapi::foot)));
 
-    if (controller.getAnalog(ControllerAnalog::leftX) == 0){
-        drive->getModel()->arcade(0.5 * controller.getAnalog(ControllerAnalog::rightY), 
-                0.5 * controller.getAnalog((ControllerAnalog::rightX)));
-    }
-
-    if (controller.getAnalog(ControllerAnalog::rightX) == 0){
-        drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), 
-                controller.getAnalog((ControllerAnalog::leftX)));
-    }
+    drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), 
+            controller.getAnalog((ControllerAnalog::leftX)));
 
     if (controller.getDigital(ControllerDigital::X) == 1){
         leftDrive.setBrakeMode(AbstractMotor::brakeMode::hold); 

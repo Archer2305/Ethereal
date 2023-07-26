@@ -22,6 +22,8 @@
 //---------buttons--------------------------------------
 #define BUTTON_INTAKE       okapi::ControllerDigital::L1
 #define BUTTON_OUTTAKE      okapi::ControllerDigital::L2
+
+#define AUTON_M_ACTUATE     okapi::ControllerDigital::A
 //-------------------------------------------------------
 
 #endif 
