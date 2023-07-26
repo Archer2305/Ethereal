@@ -42,7 +42,7 @@ void updateDrive() {
     pros::lcd::set_text(2, std::to_string(drive->getState().x.convert(okapi::foot)));
 
     drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), 
-            controller.getAnalog((ControllerAnalog::leftX)));
+            controller.getAnalog((ControllerAnalog::rightX)));
 
     if (controller.getDigital(ControllerDigital::X) == 1){
         leftDrive.setBrakeMode(AbstractMotor::brakeMode::hold); 
