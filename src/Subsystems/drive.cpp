@@ -37,6 +37,29 @@ void print_cur_state() {
     print_state("current state", drive->getState());
 }
 
+void motors_init() {
+    printf("RF: %lf, ", rightFront.getPosition());
+    printf("RM: %lf, ", rightMiddle.getPosition());
+    printf("RB: %lf\n", rightBack.getPosition());
+
+    printf("............................\n");
+
+    printf("LF: %lf, ", leftFront.getPosition());
+    printf("LM: %lf, ", leftMiddle.getPosition());
+    printf("LB: %lf\n", leftBack.getPosition());
+
+    printf("\n");
+}
+
+void odom_set_zero() {
+    okapi::OdomState zero_state = {
+            .x = 0_ft,
+            .y = 0_ft,
+            .theta = 0_deg
+    };
+    drive->setState(zero_state);
+} 
+
 void updateDrive() {
     pros::lcd::set_text(1, std::to_string(drive->getState().y.convert(okapi::foot))); 
     pros::lcd::set_text(2, std::to_string(drive->getState().x.convert(okapi::foot)));

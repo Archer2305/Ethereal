@@ -14,6 +14,8 @@ extern std::shared_ptr<okapi::OdomChassisController> drive;
 //-------------------------------------------------
 void print_state(std::string, const okapi::OdomState&);
 void print_cur_state();
+void motors_init();
+void odom_set_zero();
 
 void updateDrive();
 

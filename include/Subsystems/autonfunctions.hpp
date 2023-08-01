@@ -30,4 +30,5 @@ void drive_dis(double, double);
 void turnToAngle(double);
 void driveToPoint(double, double, double, bool);
 
+void j_curve(double, double, double);
 #endif
