@@ -2,13 +2,13 @@
 #define __PORTS_HPP__
 
 //----------drive----------
-#define RIGHT_FRONT     18
-#define RIGHT_MIDDLE    12
-#define RIGHT_BACK      11
+#define RIGHT_FRONT     19
+#define RIGHT_MIDDLE    16
+#define RIGHT_BACK      18
 
-#define LEFT_FRONT      17
-#define LEFT_MIDDLE      4
-#define LEFT_BACK        2
+#define LEFT_FRONT      12
+#define LEFT_MIDDLE     15
+#define LEFT_BACK       2
 //-------------------------
 
 //----------intake----------
@@ -16,11 +16,11 @@
 //--------------------------
 
 //----------slapper----------
-#define SLAPPER_PORT     15
+#define SLAPPER_PORT     -1
 //--------------------------
 
 //---------sensors----------
-#define IMU_PORT        16
+#define IMU_PORT        -1
 //--------------------------
 
 //----------------------buttons-------------------------------

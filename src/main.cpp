@@ -32,6 +32,14 @@ void initialize() {
 
 	pros::lcd::register_btn0_cb(leftPressed);
 	pros::lcd::register_btn2_cb(rightPressed);
+
+    okapi::Logger::setDefaultLogger(
+        std::make_shared<okapi::Logger>(
+            okapi::TimeUtilFactory::createDefault().getTimer(), // It needs a Timer
+            "/ser/sout", // Output to the PROS terminal
+            okapi::Logger::LogLevel::warn // Show errors and warnings
+        )
+    );
 }
 
 /**

@@ -8,13 +8,18 @@
 
 okapi::IMU inertial = okapi::IMU(IMU_PORT);
 
-//----------------------------functions---------------------------
+//----------------------------functions---------------------------------------
 static double normalize(double d) {      //input[0,360] -> output[-180,180]
     if (d > 180)
         d -= 360;
     return d;
 }
-//--------------
+
+static double angle_diff(double d1, double d2) {        //[-180, 180)
+    double pd = std::max(d1, d2) - std::min(d1, d2);
+    return (pd > 180) ? (360 - pd) : pd;
+}
+//--------------------------------------
 
 double to_IMU_heading(double d) {
     return normalize(90 - d);
@@ -70,7 +75,7 @@ void drive_dis(double distance, double scalar=1) {                              
 
 void turnToAngle(double targetAngle) {
     okapi::IterativePosPIDController rotatePID = 
-                okapi::IterativeControllerFactory::posPID((double)0.0128, 0.0000, 0.00000);
+                okapi::IterativeControllerFactory::posPID((double)0.0128, 0.0000, 0.00001);
 
     rotatePID.setTarget(0);
 
@@ -138,7 +143,6 @@ void driveToPoint(double posX, double posY, double speed=0.8, bool backward=fals
     drive_dis((backward ? -1 : 1) * distance, speed);
 }
 
-
 static double cal_t_angle(double tx, double ty) {
     double dx = tx - drive->getState().x.convert(okapi::foot);
     double dy = ty - drive->getState().y.convert(okapi::foot);
@@ -165,34 +169,64 @@ static double cal_t_angle(double tx, double ty) {
 
 void j_curve(double tx, double ty, double turn_scalar=1) {
     okapi::IterativePosPIDController forwardPID =
-                okapi::IterativeControllerFactory::posPID(0.5, 0, 0);
+                okapi::IterativeControllerFactory::posPID(0.82, 0, 0);
     okapi::IterativePosPIDController turnPID =
                 okapi::IterativeControllerFactory::posPID(0.5, 0, 0);
 
-    double dx = tx - drive->getState().x.convert(okapi::foot);
-    double dy = ty - drive->getState().y.convert(okapi::foot);
+    double ix = drive->getState().x.convert(okapi::foot);
+    double iy = drive->getState().y.convert(okapi::foot);
 
-    double d_dis = sqrt(dx * dx + dy * dy);
+    double dx = tx - ix;
+    double dy = ty - iy;
+
+    double d_dis = sqrt(dx * dx + dy * dy);     //dx and dy used once
     forwardPID.setTarget(d_dis);
 
     turnPID.setTarget(cal_t_angle(tx, ty));
 
-    while (d_dis >= 0.1 || (abs(leftDrive.getActualVelocity()) + abs(rightDrive.getActualVelocity()))/2 > 10) {
-        dx = tx - drive->getState().x.convert(okapi::foot);
-        dy = ty - drive->getState().y.convert(okapi::foot);
-        d_dis = sqrt(dx * dx + dy * dy);
+    int ta_reached = 0;
 
-        double fs = forwardPID.step(d_dis);
-        turnPID.setTarget(cal_t_angle(tx, ty));
-        double ts = turnPID.step(inertial.controllerGet());
+    //while (d_dis >= 0.1 || (abs(leftDrive.getActualVelocity()) + abs(rightDrive.getActualVelocity()))/2 > 10) {
+    while (true) { 
+        double dvn_x = drive->getState().x.convert(okapi::foot) - ix;
+        double dvn_y = drive->getState().y.convert(okapi::foot) - iy;
+        double dvn_dis = sqrt(dvn_x * dvn_x + dvn_y * dvn_y);
 
-        drive->getModel()->tank(fs + ts, fs - ts);
+        double fs = forwardPID.step(dvn_dis);
+
+        double ta = cal_t_angle(tx, ty);
+        double ca = inertial.controllerGet();
+        double ts;
+
+        if (angle_diff(ta, ca) < 1) {
+            ta_reached = 1;
+            turnPID.reset();
+        }
+
+        if (ta_reached) {
+            ts = 0;
+        } else {
+            turnPID.setTarget(ta);     //recalc
+            ts = turnPID.step(inertial.controllerGet()) * turn_scalar;
+        }
+
+        printf("drvn dis: %lf, target angle: %lf, ta_reached: %d, Forward_S: %lf, Turn_S: %lf, cur_ang_diff: %lf\n"
+                , dvn_dis, ta, ta_reached, fs, ts, angle_diff(ta, ca));
+        
+        double left_spd = fs - ts;
+        double right_spd = fs + ts;
+        
+        printf("left spd: %lf, right spd:%lf\n", left_spd, right_spd);
+
+        drive->getModel()->tank(left_spd, right_spd);
         pros::delay(20);
    }
 
     turnPID.reset();
     forwardPID.reset();
     drive->getModel()->tank(0, 0);
+
+    pros::delay(20);
 }
 
 

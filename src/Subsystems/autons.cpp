@@ -28,7 +28,9 @@ void autons() {
     print_cur_state();
     motors_init();
 
-    //j_curve(0, 2, 1);
+//------------------------------------
+    j_curve(2, 4, 1);
+//----------------------------------
 #if 0
     switch (auton_route) {
         case AUTON_LEFT:

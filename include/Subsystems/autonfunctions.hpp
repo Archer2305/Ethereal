@@ -1,5 +1,5 @@
-#ifndef __AUTONFUNC_HPP__
-#define __AUTONFUNC_HPP__
+#ifndef __AUTONFUNCS_HPP__
+#define __AUTONFUNCS_HPP__
 
 #include "drive.hpp"
 
@@ -31,4 +31,5 @@ void turnToAngle(double);
 void driveToPoint(double, double, double, bool);
 
 void j_curve(double, double, double);
+
 #endif
