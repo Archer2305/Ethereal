@@ -169,12 +169,12 @@ static double cal_t_angle(double tx, double ty) {
 
 void j_curve(double tx, double ty, double turn_scalar=1) {
     okapi::IterativePosPIDController forwardPID =
-                okapi::IterativeControllerFactory::posPID(0.82, 0, 0);
+                okapi::IterativeControllerFactory::posPID(0.88, 0, 0);
     okapi::IterativePosPIDController turnPID =
-                okapi::IterativeControllerFactory::posPID(0.5, 0, 0);
+                okapi::IterativeControllerFactory::posPID(0.0110, 0, 0); //0.0128
 
-    double ix = drive->getState().x.convert(okapi::foot);
-    double iy = drive->getState().y.convert(okapi::foot);
+    double ix = drive->getState().y.convert(okapi::foot);
+    double iy = drive->getState().x.convert(okapi::foot);
 
     double dx = tx - ix;
     double dy = ty - iy;
@@ -182,7 +182,7 @@ void j_curve(double tx, double ty, double turn_scalar=1) {
     double d_dis = sqrt(dx * dx + dy * dy);     //dx and dy used once
     forwardPID.setTarget(d_dis);
 
-    turnPID.setTarget(cal_t_angle(tx, ty));
+    //turnPID.setTarget(cal_t_angle(tx, ty));
 
     int ta_reached = 0;
 
@@ -207,14 +207,14 @@ void j_curve(double tx, double ty, double turn_scalar=1) {
             ts = 0;
         } else {
             turnPID.setTarget(ta);     //recalc
-            ts = turnPID.step(inertial.controllerGet()) * turn_scalar;
+            ts = turnPID.step(ca) * turn_scalar;
         }
 
-        printf("drvn dis: %lf, target angle: %lf, ta_reached: %d, Forward_S: %lf, Turn_S: %lf, cur_ang_diff: %lf\n"
-                , dvn_dis, ta, ta_reached, fs, ts, angle_diff(ta, ca));
+        printf("drvn dis: %lf, target angle: %lf, ca: %lf, ta_reached: %d, Forward_S: %lf, Turn_S: %lf, cur_ang_diff: %lf\n"
+                , dvn_dis, ta, ca, ta_reached, fs, ts, angle_diff(ta, ca));
         
-        double left_spd = fs - ts;
-        double right_spd = fs + ts;
+        double left_spd = (fs + ts) * 0.5;
+        double right_spd = (fs - ts) * 0.5;
         
         printf("left spd: %lf, right spd:%lf\n", left_spd, right_spd);
 
