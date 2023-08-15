@@ -75,7 +75,7 @@ void drive_dis(double distance, double scalar=1) {                              
 
 void turnToAngle(double targetAngle) {
     okapi::IterativePosPIDController rotatePID = 
-                okapi::IterativeControllerFactory::posPID((double)0.0128, 0.0000, 0.00001);
+                okapi::IterativeControllerFactory::posPID((double)0.01285, 0.0000, 0.0000456);
 
     rotatePID.setTarget(0);
 
@@ -166,17 +166,19 @@ static double cal_t_angle(double tx, double ty) {
     return target_angle;
 }
 
-
+//note: reverse all coordinate pairs
 void j_curve(double tx, double ty, double turn_scalar=1) {
     okapi::IterativePosPIDController forwardPID =
-                okapi::IterativeControllerFactory::posPID(0.88, 0, 0);
+                okapi::IterativeControllerFactory::posPID(0.888, 0, 0);
     okapi::IterativePosPIDController turnPID =
-                okapi::IterativeControllerFactory::posPID(0.0110, 0, 0); //0.0128
+                okapi::IterativeControllerFactory::posPID(0.0128, 0, 0.0000456); //0.0128
 
     double ix = drive->getState().y.convert(okapi::foot);
     double iy = drive->getState().x.convert(okapi::foot);
 
-    double dx = tx - ix;
+    printf("-------------ix: %lf, iy: %lf---------------\n", ix, iy);
+
+    double dx = tx  + 0 - ix;
     double dy = ty - iy;
 
     double d_dis = sqrt(dx * dx + dy * dy);     //dx and dy used once
@@ -185,33 +187,38 @@ void j_curve(double tx, double ty, double turn_scalar=1) {
     //turnPID.setTarget(cal_t_angle(tx, ty));
 
     int ta_reached = 0;
+    double dvn_dis = 0;
 
-    //while (d_dis >= 0.1 || (abs(leftDrive.getActualVelocity()) + abs(rightDrive.getActualVelocity()))/2 > 10) {
-    while (true) { 
-        double dvn_x = drive->getState().x.convert(okapi::foot) - ix;
-        double dvn_y = drive->getState().y.convert(okapi::foot) - iy;
-        double dvn_dis = sqrt(dvn_x * dvn_x + dvn_y * dvn_y);
+    while (abs(d_dis - dvn_dis) >= 0.5 || std::max(abs(leftDrive.getActualVelocity()), abs(rightDrive.getActualVelocity())) > 10) {
+    //while (true) { 
+        double cx = drive->getState().y.convert(okapi::foot);
+        double cy = drive->getState().x.convert(okapi::foot);
+        double dvn_x = cx - ix;
+        double dvn_y = cy - iy;
+        dvn_dis = sqrt(dvn_x * dvn_x + dvn_y * dvn_y);
 
         double fs = forwardPID.step(dvn_dis);
 
         double ta = cal_t_angle(tx, ty);
         double ca = inertial.controllerGet();
         double ts;
-
+/*
         if (angle_diff(ta, ca) < 1) {
             ta_reached = 1;
             turnPID.reset();
         }
-
-        if (ta_reached) {
-            ts = 0;
-        } else {
+*/
+        //if (ta_reached) {
+            //ts = 0;
+        //} else {
             turnPID.setTarget(ta);     //recalc
             ts = turnPID.step(ca) * turn_scalar;
-        }
+        //}
 
         printf("drvn dis: %lf, target angle: %lf, ca: %lf, ta_reached: %d, Forward_S: %lf, Turn_S: %lf, cur_ang_diff: %lf\n"
                 , dvn_dis, ta, ca, ta_reached, fs, ts, angle_diff(ta, ca));
+        //printf("drvn dis: %lf, target angle: %lf, dvn_x: %lf, dvn_y: %lf , cx: %lf, cy: %lf, cur_ang_diff: %lf\n", 
+                //dvn_dis, ta, dvn_x, dvn_y, cx, cy, angle_diff(ta, ca));
         
         double left_spd = (fs + ts) * 0.5;
         double right_spd = (fs - ts) * 0.5;
@@ -226,7 +233,7 @@ void j_curve(double tx, double ty, double turn_scalar=1) {
     forwardPID.reset();
     drive->getModel()->tank(0, 0);
 
-    pros::delay(20);
+    pros::delay(8);
 }
 
 

@@ -28,10 +28,28 @@ void autons() {
     print_cur_state();
     motors_init();
 
-//------------------------------------
-    j_curve(2, 4, 1.6);
-//----------------------------------
+    j_curve(-2, 2, 0.32); 
+
 #if 0
+    //valid values
+    j_curve(0, 4, 0.88);     //h should be one more than intended 
+    j_curve(-2, 6, 0.88); 
+//----------auton-(local-goal)------------
+    move_dis(4, 1);
+    pros::delay(100);
+    turnToAngle(90);
+    pros::delay(100);
+    move_dis(0.5, 0.5);
+    //outtake
+    move_dis(-0.5, 0.5);
+    pros::delay(20);
+    turnToAngle(180);
+    move_dis(2, 0.8);
+    j_curve(
+    
+//------------------------------------
+    //j_curve(-2, 4, 1.6);
+//----------------------------------
     switch (auton_route) {
         case AUTON_LEFT:
             {
