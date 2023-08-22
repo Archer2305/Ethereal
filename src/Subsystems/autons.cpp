@@ -7,7 +7,7 @@ enum {
     AUTON_RIGHT,
 };
 
-int auton_route = AUTON_LEFT;
+int auton_route = NO_AUTON;
 
 void leftPressed() {
     auton_route = AUTON_LEFT;

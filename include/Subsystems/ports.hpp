@@ -31,6 +31,9 @@
 
 #define BUTTON_SLAPPER          okapi::ControllerDigital::R2
 #define BUTTON_SLAPPER_REV      okapi::ControllerDigital::B
+
+#define BUTTON_HOLD             okapi::ControllerDigital::X
+#define BUTTON_COAST            okapi::ControllerDigital::Y
 //-----------------------------------------------------------
 
-#endif 
+#endif

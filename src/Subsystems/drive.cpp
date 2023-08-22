@@ -27,12 +27,14 @@ std::shared_ptr<OdomChassisController> drive = ChassisControllerBuilder()
 
 //-------------------------------------functions------------------------------------------
 
+//debug
 void print_state(std::string title, const okapi::OdomState& os) {
     printf("%s: %lf, %lf, %lf\n", title.c_str(),
         os.y.convert(okapi::foot), os.x.convert(okapi::foot),
         os.theta.convert(okapi::degree));
 }
 
+//debug
 void print_cur_state() {
     print_state("current state", drive->getState());
 }
@@ -67,11 +69,22 @@ void updateDrive() {
     drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), 
             controller.getAnalog((ControllerAnalog::rightX)));
 
-    if (controller.getDigital(ControllerDigital::X) == 1){
+#if 0
+    //test-----------------------------------------------------
+    if (controller.getDigital(okapi::ControllerDigital::A)) {
+            //controller.setText(0, 0, "button A pressed");
+            controller.rumble(".");
+    } else {
+            //controller.clearLine(0);
+    }
+    //---------------------------------------------------------
+#endif
+
+    if (controller.getDigital(BUTTON_HOLD) == 1) {
         leftDrive.setBrakeMode(AbstractMotor::brakeMode::hold); 
         rightDrive.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-    } else if (controller.getDigital(ControllerDigital::Y) == 1){
+    } else if (controller.getDigital(BUTTON_COAST) == 1) {
         leftDrive.setBrakeMode(AbstractMotor::brakeMode::coast); 
         rightDrive.setBrakeMode(AbstractMotor::brakeMode::coast);
     }

@@ -2,8 +2,6 @@
 #include "drive.hpp"
 #include "autonfunctions.hpp"
 
-#include <climits>
-
 #define TO_DEG  (180 / 3.14159265359)
 
 okapi::IMU inertial = okapi::IMU(IMU_PORT);
@@ -184,10 +182,12 @@ void j_curve(double tx, double ty, double turn_scalar=1) {
     double d_dis = sqrt(dx * dx + dy * dy);     //dx and dy used once
     forwardPID.setTarget(d_dis);
 
-    //turnPID.setTarget(cal_t_angle(tx, ty));
+    //turnPID.setTarget(cal_t_angle(tx, ty));   //duplicate
 
     int ta_reached = 0;
     double dvn_dis = 0;
+
+    int msg_counter = 0;
 
     while (abs(d_dis - dvn_dis) >= 0.5 || std::max(abs(leftDrive.getActualVelocity()), abs(rightDrive.getActualVelocity())) > 10) {
     //while (true) { 
@@ -215,18 +215,23 @@ void j_curve(double tx, double ty, double turn_scalar=1) {
             ts = turnPID.step(ca) * turn_scalar;
         //}
 
-        printf("drvn dis: %lf, target angle: %lf, ca: %lf, ta_reached: %d, Forward_S: %lf, Turn_S: %lf, cur_ang_diff: %lf\n"
-                , dvn_dis, ta, ca, ta_reached, fs, ts, angle_diff(ta, ca));
+        if (!msg_counter % 5) {
+            printf("drvn_d: %lf, ta: %lf, ca: %lf, ta_r: %d, F_S: %lf, T_S: %lf, ca_diff: %lf\n"
+                    , dvn_dis, ta, ca, ta_reached, fs, ts, angle_diff(ta, ca));
+        }
+        msg_counter++;
+        msg_counter = msg_counter % 5;
+        
         //printf("drvn dis: %lf, target angle: %lf, dvn_x: %lf, dvn_y: %lf , cx: %lf, cy: %lf, cur_ang_diff: %lf\n", 
                 //dvn_dis, ta, dvn_x, dvn_y, cx, cy, angle_diff(ta, ca));
         
         double left_spd = (fs + ts) * 0.5;
         double right_spd = (fs - ts) * 0.5;
         
-        printf("left spd: %lf, right spd:%lf\n", left_spd, right_spd);
+        printf("ls: %lf, rs: %lf\n", left_spd, right_spd);
 
         drive->getModel()->tank(left_spd, right_spd);
-        pros::delay(20);
+        pros::delay(23);
    }
 
     turnPID.reset();
