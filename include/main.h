@@ -90,5 +90,7 @@ void opcontrol(void);
 #include "./Subsystems/autonfunctions.hpp"
 #include "./Subsystems/autons.hpp"
 #include "./Subsystems/slapper.hpp"
+#include "./Subsystems/blocker.hpp"
+#include "./Subsystems/wings.hpp"
 
 #endif  // _PROS_MAIN_H_
