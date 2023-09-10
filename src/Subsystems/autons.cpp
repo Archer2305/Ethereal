@@ -18,7 +18,8 @@ void rightPressed() {
 }
 
 void auton_left() {
-    drive_dis(2, 1);
+     drive_dis(2, 1);
+    //turnToAngle(90);
 }
 
 void auton_right() {
