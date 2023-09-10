@@ -1,3 +1,4 @@
+#if 0
 #include "main.h"
 
 pros::ADIDigitalOut piston('A');
@@ -24,5 +25,4 @@ void update_auton_mech() {
 
     last_input = input;
 }
-    
-        
+#endif   

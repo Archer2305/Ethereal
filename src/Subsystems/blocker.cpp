@@ -1,6 +1,6 @@
 #include "main.h"
 
-pros::ADIDigitalOut blocker('B');
+pros::ADIDigitalOut blocker('H');
 
 static int last_input = 0;
 static int piston_state = 0;

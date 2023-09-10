@@ -28,8 +28,8 @@
 #define BUTTON_OUTTAKE          okapi::ControllerDigital::R2
 
 #define AUTON_M_ACTUATE         okapi::ControllerDigital::L2
-#define BLOCKER_ACTUATE         okapi::ControllerDigital::A
 #define WINGS_ACTUATE           okapi::ControllerDigital::L1
+#define BLOCKER_ACTUATE         okapi::ControllerDigital::A
 
 #define BUTTON_SLAPPER          okapi::ControllerDigital::L2
 

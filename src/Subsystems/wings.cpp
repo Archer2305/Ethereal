@@ -1,6 +1,6 @@
 #include "main.h"
 
-pros::ADIDigitalOut wings('C');
+pros::ADIDigitalOut wings('A');
 
 static int last_input = 0;
 static int piston_state = 0;
