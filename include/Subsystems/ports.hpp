@@ -3,24 +3,24 @@
 
 //----------drive----------
 #define RIGHT_FRONT     19
-#define RIGHT_MIDDLE    16
-#define RIGHT_BACK      18
+#define RIGHT_MIDDLE    15
+#define RIGHT_BACK      11
 
-#define LEFT_FRONT      12
-#define LEFT_MIDDLE     15
-#define LEFT_BACK       2
+#define LEFT_FRONT      10
+#define LEFT_MIDDLE     5
+#define LEFT_BACK       1
 //-------------------------
 
 //----------intake----------
-#define INTAKE_PORT     10
+#define INTAKE_PORT     16
 //--------------------------
 
 //----------slapper----------
-#define SLAPPER_PORT     -1
+#define SLAPPER_PORT     4
 //--------------------------
 
 //---------sensors----------
-#define IMU_PORT          5
+#define IMU_PORT        12
 //--------------------------
 
 //----------------------buttons-------------------------------
