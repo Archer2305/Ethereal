@@ -2,13 +2,13 @@
 #define __PORTS_HPP__
 
 //----------drive----------
-#define RIGHT_FRONT     19
-#define RIGHT_MIDDLE    15
-#define RIGHT_BACK      11
+#define RIGHT_FRONT     1
+#define RIGHT_MIDDLE    5
+#define RIGHT_BACK      10
 
-#define LEFT_FRONT      10
-#define LEFT_MIDDLE     5
-#define LEFT_BACK       1
+#define LEFT_FRONT      11
+#define LEFT_MIDDLE     15
+#define LEFT_BACK       19
 //-------------------------
 
 //----------intake----------

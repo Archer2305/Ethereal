@@ -22,14 +22,18 @@ inline double remap(double d) {
     d = id + fp;
     return (d <= 180) ? d : (d - 360);
 }
+
+//inline double reflex_convert(double d) {
+
+//}
 //------------------------------------
 
 double to_IMU_heading(double heading);
 
 void drive_dis(double, double);
-void turnToAngle(double);
+void turnToAngle(double, double);
 void driveToPoint(double, double, double, bool);
 
-void j_curve(double, double, double);
+void j_curve(double, double, bool, double);
 
 #endif

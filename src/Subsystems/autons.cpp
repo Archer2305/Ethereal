@@ -18,8 +18,25 @@ void rightPressed() {
 }
 
 void auton_left() {
-     drive_dis(2, 1);
-    //turnToAngle(90);
+    //blocker.set_value(1);
+    pros::delay(500);
+    intake.moveVelocity(600);
+    drive_dis(-1.2, 0.64);
+    pros::delay(100);
+    drive_dis(3, 0.72);
+    intake.moveVelocity(0);
+    //blocker.set_value(0);       //integrate into blocker_extend
+
+    //2.3
+    j_curve(-2.8, 3.2, false, 1.2);
+    //turnToAngle(-105, 1);
+    drive_dis(-0.16, 0.88);
+    turnToAngle(90, 1);
+    intake.moveVelocity(-600);
+    pros::delay(500);
+    drive_dis(-1, 1);
+
+    
 }
 
 void auton_right() {
