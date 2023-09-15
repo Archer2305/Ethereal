@@ -49,7 +49,6 @@ void auton_left() {
     
     
     intake.moveVelocity(0);
-#endif
 
     blocker.set_value(1);
     intake.moveVelocity(600);
@@ -70,6 +69,9 @@ void auton_left() {
     intake.moveVelocity(0);
     wings.set_value(0);
     
+    drive_dis(-1.6, 1);
+#endif
+
 }
 
 void auton_right() {
@@ -88,7 +90,7 @@ void auton_right() {
     //intake.moveVelocity(0);
     drive_dis(0.88, 0.88);
     turnToAngle(-48, 0.88);
-    drive_dis(-1.28, 0.88);
+    drive_dis(-1.25, 0.88);
     intake.moveVelocity(600);
     drive_dis(-0.4, 1);
     pros::delay(160);
@@ -104,8 +106,15 @@ void auton_right() {
     
 }
 
+void auton_one() {
+    drive_arc(-3, 30, 0.8);
+    pros::delay(100);
+    wings.set_value(1);
+    drive_arc(-3, 45, 0.8);
+}
+
 void autons() {
     odom_set_zero();        //do not delete
     
-    auton_left();
+    auton_one();
 }

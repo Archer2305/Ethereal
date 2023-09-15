@@ -1,6 +1,8 @@
 #ifndef __AUTONFUNCS_HPP__
 #define __AUTONFUNCS_HPP__
 
+using namespace okapi::literals;
+
 #include "drive.hpp"
 
 //-----------------------------------
@@ -35,5 +37,6 @@ void turnToAngle(double, double);
 void driveToPoint(double, double, double, bool);
 
 void j_curve(double, double, bool, double);
+void drive_arc(double, double, double);
 
 #endif
