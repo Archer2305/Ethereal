@@ -23,6 +23,11 @@
 #define IMU_PORT        12
 //--------------------------
 
+//---------pneumatics----------
+#define WINGS_ADI       'A'
+#define BLOCKER_ADI     'H'
+//-----------------------------
+
 //----------------------buttons-------------------------------
 #define BUTTON_INTAKE           okapi::ControllerDigital::R1
 #define BUTTON_OUTTAKE          okapi::ControllerDigital::R2

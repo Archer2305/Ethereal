@@ -4,6 +4,6 @@
 
 okapi::Controller controller;
 
-pneumaticSys wings('A', WINGS_ACTUATE);
-pneumaticSys blocker('H', BLOCKER_ACTUATE);
+pneumaticSys wings(WINGS_ADI, WINGS_ACTUATE);
+pneumaticSys blocker(BLOCKER_ADI, BLOCKER_ACTUATE);
     
