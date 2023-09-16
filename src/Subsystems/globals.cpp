@@ -1,7 +1,9 @@
 #include "main.h"
 #include "globals.hpp"
+#include "pneumatics.hpp"
 
-using namespace okapi;
+okapi::Controller controller;
 
-Controller controller;
+pneumaticSys wings('A', WINGS_ACTUATE);
+pneumaticSys blocker('H', BLOCKER_ACTUATE);
     

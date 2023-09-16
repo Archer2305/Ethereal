@@ -74,9 +74,9 @@ void opcontrol() {
         updateDrive();
         updateIntake();
 		updateSlapper();
-        update_blocker();
-        update_wings();
-        
+        wings.driver_update();
+        blocker.driver_update();
+
 		rate.delay(100_Hz); //delay to prevent cpu from overloading and therefore lagging and freezing 
 	}  
 }

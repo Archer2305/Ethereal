@@ -1,5 +1,5 @@
 #include "main.h"
-
+#if 0
 pros::ADIDigitalOut blocker('H');
 
 static int last_input = 0;
@@ -20,5 +20,4 @@ void update_blocker() {
 
     last_input = input;
 }
-    
-        
+#endif 

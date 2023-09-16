@@ -43,8 +43,9 @@ void drive_dis(double distance, double scalar=1) {                              
 
     double orgPosX = drive->getState().x.convert(okapi::foot);
     double orgPosY = drive->getState().y.convert(okapi::foot);
-    printf("\n-->  start    => %10.3lf    : state = (%9.5lf, %9.5lf, %9.8lf)\n", distance, orgPosX, orgPosY, inertial.controllerGet()
-    );
+
+    printf("\n-->  start    => %10.3lf    : state = (%9.5lf, %9.5lf, %9.8lf)\n", 
+        distance, orgPosX, orgPosY, inertial.controllerGet());
 
     double distTravelled = 0;
 
@@ -260,7 +261,7 @@ void drive_arc(double r, double theta, double scalar=0.8) {     //returns distan
         return;
     }
 
-    assert(abs(r * 12) >= DRIVE_H_WIDTH);
+    //assert(abs(r * 12) >= DRIVE_H_WIDTH);
 
     double sd = abs(r * 12) - (DRIVE_H_WIDTH);
     double ld = abs(r * 12) + (DRIVE_H_WIDTH);
@@ -268,7 +269,10 @@ void drive_arc(double r, double theta, double scalar=0.8) {     //returns distan
     double left_speed = ((r > 0) ? 1 : (sd / ld)) * ((theta < 0) ? -1 : 1) * scalar;
     double right_speed = ((r > 0) ? (sd / ld) : 1) * ((theta < 0) ? -1 : 1) * scalar;
 
+    double target_angle = remap(theta + inertial.controllerGet());
+
     printf("ls: %lf, rs: %lf\n", left_speed, right_speed); 
+    printf("final target: %lf\n", target_angle); 
 
     okapi::IterativePosPIDController rotatePID = 
                 okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.00055);
@@ -277,11 +281,13 @@ void drive_arc(double r, double theta, double scalar=0.8) {     //returns distan
 
     double initAngle = inertial.controllerGet();
 
-    while (abs(angle_diff_dir(initAngle, theta)) >= 3 || abs(leftDrive.getActualVelocity()) > 15) {
+    while (abs(angle_diff_dir(initAngle, theta)) >= 3 
+            || std::max(abs(leftDrive.getActualVelocity()), abs(rightDrive.getActualVelocity())) > 16) {
+
         double ca = inertial.controllerGet();
         double ar = angle_diff_dir(initAngle, ca);
     
-        printf("<offset: %lf\n", angle_diff_dir(ca, theta)); 
+        printf("<offset: %lf\n", remap(ca)); 
         
         double vel = rotatePID.step(ar);
         drive->getModel()->tank(left_speed * vel, right_speed * vel);
