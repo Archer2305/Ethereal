@@ -30,7 +30,7 @@ double to_IMU_heading(double d) {
     return normalize(90 - d);
 }
 
-void drive_dis(double distance, double scalar=1) {                                          //init 0.85
+void drive_dis(double distance, double scalar) {                                          //init 0.85
     if (abs(distance) <= 0.01)
         return;
 // .88
@@ -89,8 +89,7 @@ void turnToAngle(double targetAngle, double scalar) {
     double initAngle = remap(inertial.controllerGet() - targetAngle);
 
     while (abs(0 - initAngle) >= 3 || abs(leftDrive.getActualVelocity()) > 15) {
-    //while (true) {   
-        //tuning
+    //while (true) {   //tuning
         printf("<offsetL%lf\n", initAngle) ; 
         initAngle = remap(inertial.controllerGet() - targetAngle);
 
@@ -111,7 +110,7 @@ void turnToAngle(double targetAngle, double scalar) {
     printf("IMU: %lf\n", inertial.controllerGet());
 }
 
-void driveToPoint(double posX, double posY, double speed=0.8, bool backward=false) {
+void driveToPoint(double posX, double posY, double speed, bool backward) {
     double ogXPos = drive->getState().y.convert(okapi::foot); 
     double ogYPos = drive->getState().x.convert(okapi::foot);
 
@@ -177,7 +176,7 @@ static double cal_t_angle(double tx, double ty) {
 
 
 //note: reverse all coordinate pairs
-void j_curve(double tx, double ty, bool reversed, double turn_scalar=1) {
+void j_curve(double tx, double ty, bool reversed, double turn_scalar) {
     okapi::IterativePosPIDController forwardPID = okapi::IterativeControllerFactory::posPID(0.848, 0.00, 0.0000);
     okapi::IterativePosPIDController turnPID = 
                 okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.0005856);
@@ -255,42 +254,71 @@ void j_curve(double tx, double ty, bool reversed, double turn_scalar=1) {
 }
 
 
-// r < 0 (left), r > 0 (right)
+// r > 0 (left), r < 0 (right)
 void drive_arc(double r, double theta, double scalar=0.8) {     //returns distance, arc to theta
-    if (theta == 0 || theta == 360) {
-        return;
-    }
-
-    //assert(abs(r * 12) >= DRIVE_H_WIDTH);
-
     double sd = abs(r * 12) - (DRIVE_H_WIDTH);
     double ld = abs(r * 12) + (DRIVE_H_WIDTH);
 
-    double left_speed = ((r > 0) ? 1 : (sd / ld)) * ((theta < 0) ? -1 : 1) * scalar;
-    double right_speed = ((r > 0) ? (sd / ld) : 1) * ((theta < 0) ? -1 : 1) * scalar;
+    double left_speed = ((theta > 0) ? 1 : (sd / ld)) * ((theta < 0) ? -1 : 1) * scalar;
+    double right_speed = ((theta > 0) ? (sd / ld) : 1) * ((theta < 0) ? -1 : 1) * scalar;
 
-    double target_angle = remap(theta + inertial.controllerGet());
+    printf("ca: %f\n", inertial.controllerGet());
 
-    printf("ls: %lf, rs: %lf\n", left_speed, right_speed); 
-    printf("final target: %lf\n", target_angle); 
+    double initAngle = remap(inertial.controllerGet() - theta);
 
     okapi::IterativePosPIDController rotatePID = 
                 okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.00055);
 
-    rotatePID.setTarget(theta);
+    rotatePID.setTarget(0);
 
-    double initAngle = inertial.controllerGet();
+    printf("ls: %lf, rs: %lf\n", left_speed, right_speed); 
 
-    while (abs(angle_diff_dir(initAngle, theta)) >= 3 
-            || std::max(abs(leftDrive.getActualVelocity()), abs(rightDrive.getActualVelocity())) > 16) {
+    while (abs(initAngle) >= 3) {
+//            || ((theta > 0) ? abs(leftDrive.getActualVelocity()) > 16 : abs(rightDrive.getActualVelocity()) > 16)) {
 
-        double ca = inertial.controllerGet();
-        double ar = angle_diff_dir(initAngle, ca);
-    
-        printf("<offset: %lf\n", remap(ca)); 
-        
-        double vel = rotatePID.step(ar);
+        printf("<offset: %lf\n", initAngle) ;
+        initAngle = remap(inertial.controllerGet() - theta);
+
+        if (initAngle >= 190) {
+            printf("uhhhhh this went bad\n");
+            break;
+        }
+
+        double vel = rotatePID.step(initAngle);
         drive->getModel()->tank(left_speed * vel, right_speed * vel);
+
+        pros::delay(20);
+    }
+
+    rotatePID.reset();
+    drive->getModel()->tank(0, 0);
+
+    angle_diff_dir(0, 0);
+
+    printf("IMU: %lf\n", inertial.controllerGet());
+}
+
+#if 0
+void turnToAngle(double targetAngle, double scalar) {
+    okapi::IterativePosPIDController rotatePID =
+                okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.0005856);
+
+    rotatePID.setTarget(0);
+
+    double initAngle = remap(inertial.controllerGet() - targetAngle);
+
+    while (abs(0 - initAngle) >= 3 || abs(leftDrive.getActualVelocity()) > 15) {
+    //while (true) {   //tuning
+        printf("<offsetL%lf\n", initAngle) ;
+        initAngle = remap(inertial.controllerGet() - targetAngle);
+
+        if (initAngle >= 190) {
+            printf("uhhhhh this went bad\n");
+            break;
+        }
+
+        double vel = rotatePID.step(initAngle);
+        drive->getModel()->tank(vel * scalar, -vel * scalar);
 
         pros::delay(20);
     }
@@ -300,3 +328,4 @@ void drive_arc(double r, double theta, double scalar=0.8) {     //returns distan
 
     printf("IMU: %lf\n", inertial.controllerGet());
 }
+#endif
