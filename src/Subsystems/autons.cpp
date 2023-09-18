@@ -49,10 +49,23 @@ void auton_test() {
     drive_arc(0.5, -77, 0.8);
     wings.set_state(0);
     drive_arc(0.8, -90, 0.8);
+
+    pros::delay(20);
+    turnToAngle(-60);//turn towards goal
+    drive_dis(1.5); //score two triballs
+
+    pros::delay(50);
+    drive_dis(-1.2);
+    turnToAngle(-130);//turn towards triball
+
+    
+    // drive_arc(-2, -60, 0.8);
+
+    // wings.set_state(1);
 }
 
 void autons() {
     odom_set_zero();        //do not delete
 
     auton_test();    
-}
+}   
