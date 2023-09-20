@@ -18,7 +18,7 @@ void rightPressed() {
 }
 
 void auton_left() {
-    drive_dis(1);    
+    drive_arc(-1.2, 90, 0.8, true);  //turn around goal
 }
 
 void auton_right() {
@@ -48,15 +48,29 @@ void auton_test() {
     pros::delay(480);
     drive_arc(0.5, -77, 0.8);
     wings.set_state(0);
-    drive_arc(0.8, -90, 0.8);
+    drive_arc(0.8, -90, 1);
 
     pros::delay(20);
-    turnToAngle(-60);//turn towards goal
+    turnToAngle(-50); //turn towards goal
     drive_dis(1.5); //score two triballs
 
     pros::delay(50);
     drive_dis(-1.2);
-    turnToAngle(-130);//turn towards triball
+    turnToAngle(8); //turn towards triball2
+    
+
+    drive_arc(-1.2, 90, 0.8, true);  //turn around goal
+    pros::delay(320);
+    intake.moveVelocity(-200);  //spit out triball
+    pros::delay(160);
+    drive_dis(0.5, 0.88);
+    intake.moveVelocity(0);
+    
+    turnToAngle(16);    //go towards second triball
+    intake.moveVelocity(600);
+    drive_dis(-1.6, 0.88);
+    pros::delay(280);
+    intake.moveVelocity(0);
 
     
     // drive_arc(-2, -60, 0.8);

@@ -33,10 +33,10 @@ inline double remap(double d) {
 double to_IMU_heading(double heading);
 
 void drive_dis(double, double scalar=1);
-void turnToAngle(double, double scalar=0.88);
+void turnToAngle(double, double scalar=0.88, bool reversed=false);
 void driveToPoint(double, double, double speed=0.8, bool backward=false);
 
 void j_curve(double, double, bool reversed=false, double turn_scalar=1);
-void drive_arc(double, double, double);
+void drive_arc(double, double, double scalar=0.8, bool reversed=false);
 
 #endif
