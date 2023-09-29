@@ -2,21 +2,21 @@
 #define __PORTS_HPP__
 
 //----------drive----------
-#define RIGHT_FRONT     1
-#define RIGHT_MIDDLE    5
-#define RIGHT_BACK      10
+#define RIGHT_FRONT     18
+#define RIGHT_MIDDLE    19
+#define RIGHT_BACK      11 
 
-#define LEFT_FRONT      11
-#define LEFT_MIDDLE     15
-#define LEFT_BACK       19
+#define LEFT_FRONT      16 
+#define LEFT_MIDDLE     17
+#define LEFT_BACK       12 
 //-------------------------
 
 //----------intake----------
-#define INTAKE_PORT     16
+#define INTAKE_PORT     10
 //--------------------------
 
-//----------slapper----------
-#define SLAPPER_PORT     4
+//----------catapult----------
+#define SLAPPER_PORT       -1 
 //--------------------------
 
 //---------sensors----------

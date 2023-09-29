@@ -49,8 +49,8 @@ void drive_dis(double distance, double scalar) {                                
 
     double distTravelled = 0;
 
-     while (abs(target-distTravelled) >= 0.16 || abs(leftDrive.getActualVelocity()) > 10) { 
-     //while (true) {                  //tuning
+     //while (abs(target-distTravelled) >= 0.16 || abs(leftDrive.getActualVelocity()) > 10) { 
+     while (true) {                  //tuning
         double state_x = drive->getState().x.convert(okapi::foot);
         double state_y = drive->getState().y.convert(okapi::foot);
 
@@ -253,7 +253,6 @@ void j_curve(double tx, double ty, bool reversed, double turn_scalar) {
     pros::delay(8);
 }
 
-
 // r > 0 (left), r < 0 (right)
 void drive_arc(double r, double theta, double scalar, bool reversed) {     //returns distance, arc to theta
     double sd = abs(r * 12) - (DRIVE_H_WIDTH);
@@ -271,7 +270,7 @@ void drive_arc(double r, double theta, double scalar, bool reversed) {     //ret
 
     rotatePID.setTarget(0);
 
-    printf("ls: %lf, rs: %lf\n", left_speed, right_speed); 
+    printf("ls: %lf, rs: %lf\n", reversed ? -right_speed : left_speed, reversed ? -left_speed : right_speed);
 
     while (abs(initAngle) >= 3) {
 //            || ((theta > 0) ? abs(leftDrive.getActualVelocity()) > 16 : abs(rightDrive.getActualVelocity()) > 16)) {

@@ -18,7 +18,9 @@ void rightPressed() {
 }
 
 void auton_left() {
-    drive_arc(-1.2, 90, 0.8, true);  //turn around goal
+    //drive_arc(-1.2, 90, 0.8, true);  //turn around goal
+
+    drive_dis(2, 1);
 }
 
 void auton_right() {
@@ -35,14 +37,13 @@ void auton_test() {
     wings.set_value(1);
     drive_arc(-3, 45, 0.8);
 #endif 
-    
-    intake.moveVelocity(600);
-    drive_dis(-0.28, 0.8);
-    pros::delay(280);
-    intake.moveVelocity(0);
-    drive_dis(0.28, 0.8);
 
-    drive_dis(1.2, 1);
+    intake.moveVelocity(500);
+    drive_dis(-0.28, 0.8);
+    pros::delay(230);
+    intake.moveVelocity(0);
+
+    drive_dis(1.45, 0.88);
     drive_arc(1.8, -45, 1); 
     wings.set_state(1);
     pros::delay(480);
@@ -56,22 +57,25 @@ void auton_test() {
 
     pros::delay(50);
     drive_dis(-1.2);
-    turnToAngle(8); //turn towards triball2
-    
+    turnToAngle(8); 
 
+    printf("------------!!!---------\n");
     drive_arc(-1.2, 90, 0.8, true);  //turn around goal
+    printf("------------------------\n");
     pros::delay(320);
-    intake.moveVelocity(-200);  //spit out triball
-    pros::delay(160);
-    drive_dis(0.5, 0.88);
+    intake.moveVelocity(-320);  //spit out triball
+    pros::delay(230);
+    drive_dis(0.8, 0.88);
     intake.moveVelocity(0);
     
-    turnToAngle(16);    //go towards second triball
+    turnToAngle(22);    //go towards second triball
     intake.moveVelocity(600);
-    drive_dis(-1.6, 0.88);
+    drive_dis(-1.89, 0.88);
     pros::delay(280);
     intake.moveVelocity(0);
+    wings.set_state(1);
 
+    drive_arc(0.64, 135, 0.8, true);
     
     // drive_arc(-2, -60, 0.8);
 
@@ -81,5 +85,5 @@ void auton_test() {
 void autons() {
     odom_set_zero();        //do not delete
 
-    auton_test();    
+    auton_left();    
 }   
