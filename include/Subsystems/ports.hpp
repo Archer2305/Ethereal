@@ -16,11 +16,11 @@
 //--------------------------
 
 //----------catapult----------
-#define SLAPPER_PORT       -1 
+#define SLAPPER_PORT    21 
 //--------------------------
 
 //---------sensors----------
-#define IMU_PORT        12
+#define IMU_PORT        7 
 //--------------------------
 
 //---------pneumatics----------
@@ -34,7 +34,7 @@
 
 #define AUTON_M_ACTUATE         okapi::ControllerDigital::L2
 #define WINGS_ACTUATE           okapi::ControllerDigital::L1
-#define BLOCKER_ACTUATE         okapi::ControllerDigital::A
+#define BLOCKER_ACTUATE         okapi::ControllerDigital::B
 
 #define BUTTON_SLAPPER          okapi::ControllerDigital::L2
 

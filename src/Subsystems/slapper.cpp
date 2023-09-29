@@ -1,7 +1,7 @@
 #include "main.h"
 #include "slapper.hpp"
 
-okapi::Motor slapper(SLAPPER_PORT, false, okapi::AbstractMotor::gearset::red, okapi::AbstractMotor::encoderUnits::degrees);
+okapi::Motor slapper(SLAPPER_PORT, true, okapi::AbstractMotor::gearset::red, okapi::AbstractMotor::encoderUnits::degrees);
 
 void updateSlapper() {
     slapper.setBrakeMode(okapi::AbstractMotor::brakeMode::hold); 

@@ -2,10 +2,10 @@
 #define __DRIVE_HPP__
 
 #define WHEEL_SIZE      4.125_in
-#define DRIVE_WIDTH     13.5_in
+#define DRIVE_WIDTH     11_in
 #define GEAR_RATIO      ((double)2. / 1.)
 
-#define DRIVE_H_WIDTH     6.525
+#define DRIVE_H_WIDTH     5.5
 
 extern okapi::MotorGroup leftDrive;
 extern okapi::MotorGroup rightDrive;

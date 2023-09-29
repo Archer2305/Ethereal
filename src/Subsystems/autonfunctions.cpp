@@ -30,6 +30,8 @@ double to_IMU_heading(double d) {
     return normalize(90 - d);
 }
 
+#define DRIVE_SCALAR    0.888
+
 void drive_dis(double distance, double scalar) {                                          //init 0.85
     if (abs(distance) <= 0.01)
         return;
@@ -49,13 +51,15 @@ void drive_dis(double distance, double scalar) {                                
 
     double distTravelled = 0;
 
-     //while (abs(target-distTravelled) >= 0.16 || abs(leftDrive.getActualVelocity()) > 10) { 
-     while (true) {                  //tuning
+    while (abs(target-distTravelled) >= 0.16 || abs(leftDrive.getActualVelocity()) > 10) { 
+    //while (true) {                  //tuning
         double state_x = drive->getState().x.convert(okapi::foot);
         double state_y = drive->getState().y.convert(okapi::foot);
 
         double dx = state_x - orgPosX;
         double dy = state_y - orgPosY;
+
+        //printf("IMU: %lf\n", inertial.controllerGet());
 
         distTravelled = sqrt(dx * dx + dy * dy);
 
@@ -68,7 +72,7 @@ void drive_dis(double distance, double scalar) {                                
         //printf("distTravelled: %lf, cur_x: %lf, cur_y:%lf\n",
         //   distTravelled, drive->getState().y.convert(okapi::foot), drive->getState().x.convert(okapi::foot));
 
-        drive->getModel()->tank(vel * scalar, vel * scalar);
+        drive->getModel()->tank(vel * scalar * DRIVE_SCALAR, vel * scalar);
         pros::delay(16);   //A1
     }
 
