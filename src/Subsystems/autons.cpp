@@ -25,10 +25,47 @@ void auton_left() {
 }
 
 void auton_right() {
-    drive_arc(-3, 30, 0.8);
-    pros::delay(100);
+#if 0
+    turnToAngle(-36);
+    intake.moveVelocity(-500);
+    drive_dis(-2.4, 1);
+    intake.moveVelocity(0);
+    drive_arc(2.8, -2, 0.8);
+
+    turnToAngle(-48);
+    intake.moveVelocity(-320);
+    pros::delay(480)
+    intake.moveVelocity(0);
+    
+    drive_dis(0.8, 0.8);
+    turnToAngle(132);
+    drive_dis(0.88, 1);
+    
+    //drive_arc(2.8, 90, 0.8);
     wings.set_state(1);
-    drive_arc(-3, 45, 0.8);
+    pros::delay(640);
+    wings.set_state(0);
+    turnToAngle(-36);
+    drive_dis(2.3, 1);
+#endif
+    
+    turnToAngle(-30, 0.77);
+    drive_dis(2.3, 1);
+    pros::delay(320);
+    drive_dis(-1, 0.8);
+    turnToAngle(145, 0.88);
+    drive_dis(0.59, 0.88);
+    wings.set_state(1);
+    drive_dis(0.5, 0.8);
+    pros::delay(480); 
+    wings.set_state(0);
+    turnToAngle(90);
+    drive_dis(3.6, 0.8);
+    blocker.set_state(1);
+/*
+    drive_arc(1.6, -88, 0.88);
+    drive_dis(3.2, 0.88);    
+ */
 }
 
 void auton_test() {
@@ -45,19 +82,19 @@ void auton_test() {
     drive_dis(-0.28, 0.88);
     intake.moveVelocity(0); // inake the triball
 
-    drive_dis(1.52, 1);
+    drive_dis(1.52, 0.88);
     intake.moveVelocity(0);
-    drive_arc(1.6, -45, 0.95); 
+    drive_arc(1.6, -45, 0.88); 
     wings.set_state(1);//toggle the wings 
     pros::delay(450);
-    drive_arc(0.5, -90, 0.8);
+    drive_arc(0.5, -90, 0.72);
     printf("DEBUG: DRIVE ARC EXITED\n");
     pros::delay(200);
     wings.set_state(0);
     printf("turn start\n");
-    turnToAngle(-75);
+    turnToAngle(-51);
     printf("turn end\n");
-    drive_dis(1.7);
+    drive_dis(1.7, 1);
     // drive_arc(0.5, -85, 0.95);
     // pros::delay(530);
     // turnToAngle(-77, 1);
@@ -96,5 +133,5 @@ void auton_test() {
 void autons() {
     odom_set_zero();        //do not delete
 
-    auton_test();    
+    auton_right();    
 }   
