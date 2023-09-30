@@ -76,12 +76,12 @@ void drive_dis(double distance, double scalar) {                                
         pros::delay(16);   //A1
     }
 
+    drivePID.reset(); 
+    drive->getModel()->tank(0, 0); 
+
     double state_x = drive->getState().x.convert(okapi::foot);
     double state_y = drive->getState().y.convert(okapi::foot);
     printf("-->   end      : state = (%10.3lf, %10.3lf)\n", state_x, state_y);
-
-    drivePID.reset(); 
-    drive->getModel()->tank(0, 0); 
 }
 
 void turnToAngle(double targetAngle, double scalar, bool reversed) {
@@ -270,14 +270,14 @@ void drive_arc(double r, double theta, double scalar, bool reversed) {     //ret
     double initAngle = remap(inertial.controllerGet() - theta);
 
     okapi::IterativePosPIDController rotatePID = 
-                okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.00055);
+                okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.00053);
 
     rotatePID.setTarget(0);
 
     printf("ls: %lf, rs: %lf\n", reversed ? -right_speed : left_speed, reversed ? -left_speed : right_speed);
 
-    while (abs(initAngle) >= 3) {
-//            || ((theta > 0) ? abs(leftDrive.getActualVelocity()) > 16 : abs(rightDrive.getActualVelocity()) > 16)) {
+    while (abs(initAngle) >= 4
+            || std::max(abs(leftDrive.getActualVelocity()), abs(rightDrive.getActualVelocity())) > 8) {
 
         printf("<offset: %lf\n", initAngle) ;
         initAngle = remap(inertial.controllerGet() - theta);

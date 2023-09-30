@@ -48,13 +48,13 @@ void auton_test() {
     drive_arc(1.6, -45, 0.9); 
     wings.set_state(1);
     pros::delay(480);
-    drive_arc(0.48, -76.7, 1);
+    turnToAngle(-77, 1);
     wings.set_state(0);
     drive_arc(0.8, -90, 1);
 
     pros::delay(20);
     turnToAngle(-50); //turn towards goal
-    drive_dis(1.32, 1); //score two triballs
+    drive_dis(1, 1); //score two triballs   1.32
 
     pros::delay(50);
     drive_dis(-1.2);
