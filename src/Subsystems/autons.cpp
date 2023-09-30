@@ -39,19 +39,30 @@ void auton_test() {
     drive_arc(-3, 45, 0.8);
 #endif 
 
-    intake.moveVelocity(480);
+    intake.moveVelocity(600);
+    pros::delay(380);
+
     drive_dis(-0.28, 0.88);
-    pros::delay(230);
+    intake.moveVelocity(0); // inake the triball
+
+    drive_dis(1.52, 1);
     intake.moveVelocity(0);
-
-    drive_dis(1.32, 0.88);
-    drive_arc(1.6, -45, 0.9); 
-    wings.set_state(1);
-    pros::delay(480);
-    turnToAngle(-77, 1);
+    drive_arc(1.6, -45, 0.95); 
+    wings.set_state(1);//toggle the wings 
+    pros::delay(450);
+    drive_arc(0.5, -90, 0.8);
+    printf("DEBUG: DRIVE ARC EXITED\n");
+    pros::delay(200);
     wings.set_state(0);
-    drive_arc(0.8, -90, 1);
-
+    printf("turn start\n");
+    turnToAngle(-75);
+    printf("turn end\n");
+    drive_dis(1.7);
+    // drive_arc(0.5, -85, 0.95);
+    // pros::delay(530);
+    // turnToAngle(-77, 1);
+    // wings.set_state(0);
+/*
     pros::delay(20);
     turnToAngle(-50); //turn towards goal
     drive_dis(1, 1); //score two triballs   1.32
@@ -79,7 +90,7 @@ void auton_test() {
     turnToAngle(-90, 0.8);
     wings.set_state(1);
     drive_arc(1.52, -8, 0.8, true);
-
+*/
 }
 
 void autons() {
