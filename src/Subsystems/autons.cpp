@@ -53,15 +53,18 @@ void auton_right() {
     drive_dis(2.3, 1);
     pros::delay(320);
     drive_dis(-1, 0.8);
-    turnToAngle(145, 0.88);
+    turnToAngle(154, 0.88);
     drive_dis(0.59, 0.88);
     wings.set_state(1);
-    drive_dis(0.5, 0.8);
+    pros::delay(320);
+    drive_dis(0.5, 1);
     pros::delay(480); 
+    turnToAngle(100, 1);
     wings.set_state(0);
+    drive_dis(1.82, 0.8);
     turnToAngle(90);
-    drive_dis(3.6, 0.8);
     blocker.set_state(1);
+    drive_dis(1.59);
 /*
     drive_arc(1.6, -88, 0.88);
     drive_dis(3.2, 0.88);    
@@ -82,20 +85,29 @@ void auton_test() {
     drive_dis(-0.28, 0.88);
     intake.moveVelocity(0); // inake the triball
 
-    drive_dis(1.52, 0.88);
+    drive_dis(2, 0.8);
     intake.moveVelocity(0);
-    drive_arc(1.6, -45, 0.88); 
+    drive_arc(1.6, -45, 0.8); 
     wings.set_state(1);//toggle the wings 
     pros::delay(450);
     drive_arc(0.5, -90, 0.72);
-    printf("DEBUG: DRIVE ARC EXITED\n");
     pros::delay(200);
     wings.set_state(0);
-    printf("turn start\n");
     turnToAngle(-51);
-    printf("turn end\n");
-    drive_dis(1.7, 1);
-    // drive_arc(0.5, -85, 0.95);
+    drive_dis(1.4, 1);
+    drive_dis(-0.8, 0.8);
+    turnToAngle(130, 0.8);
+    intake.moveVelocity(-480);
+    pros::delay(480);
+    drive_dis(0.64, 0.8);
+    turnToAngle(-64);
+    intake.moveVelocity(0);
+    //drive_dis(1.7, 1);
+    drive->getModel()->tank(1, 1);
+    pros::delay(2800);
+    drive->getModel()->tank(0, 0);
+    drive_dis(-0.8, 0.8);
+    //drive_arc(1.6, -85, 0.95);
     // pros::delay(530);
     // turnToAngle(-77, 1);
     // wings.set_state(0);
@@ -129,9 +141,15 @@ void auton_test() {
     drive_arc(1.52, -8, 0.8, true);
 */
 }
-
+extern okapi::Motor slapper;
+void skills() {
+    slapper.moveVelocity(600);
+    //pros::delay(23000);
+    //slapper.moveVelocity(0);
+    
+}
 void autons() {
     odom_set_zero();        //do not delete
 
-    auton_right();    
+    auton_test();    
 }   
