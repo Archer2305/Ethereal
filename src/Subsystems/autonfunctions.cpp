@@ -30,7 +30,7 @@ double to_IMU_heading(double d) {
     return normalize(90 - d);
 }
 
-#define DRIVE_SCALAR    0.888
+#define L_DRIVE_SCALAR    0.964   //0.9072
 
 void drive_dis(double distance, double scalar) {                                          //init 0.85
     if (abs(distance) <= 0.01)
@@ -72,7 +72,7 @@ void drive_dis(double distance, double scalar) {                                
         //printf("distTravelled: %lf, cur_x: %lf, cur_y:%lf\n",
         //   distTravelled, drive->getState().y.convert(okapi::foot), drive->getState().x.convert(okapi::foot));
 
-        drive->getModel()->tank(vel * scalar * DRIVE_SCALAR, vel * scalar);
+        drive->getModel()->tank(vel * scalar * L_DRIVE_SCALAR, vel * scalar);
         pros::delay(16);   //A1
     }
 
@@ -86,7 +86,7 @@ void drive_dis(double distance, double scalar) {                                
 
 void turnToAngle(double targetAngle, double scalar, bool reversed) {
     okapi::IterativePosPIDController rotatePID = 
-                okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.0005856);
+                okapi::IterativeControllerFactory::posPID((double)0.024816, 0.000000, 0.00032); //28, 42
 
     rotatePID.setTarget(0);
 
@@ -257,30 +257,50 @@ void j_curve(double tx, double ty, bool reversed, double turn_scalar) {
     pros::delay(8);
 }
 
-// r > 0 (left), r < 0 (right)
-void drive_arc(double r, double theta, double scalar, bool reversed) {     //returns distance, arc to theta
+//r > 0, theta -> (-180, 180), reversed drives backwards to same angle
+void drive_arc(double r, double targetAngle, double scalar, bool reversed) {     //returns distance, arc to theta
     double sd = abs(r * 12) - (DRIVE_H_WIDTH);
     double ld = abs(r * 12) + (DRIVE_H_WIDTH);
+    printf("smaller dis: %lf, larger dis: %lf\n", sd, ld);
 
-    double left_speed = ((theta > 0) ? 1 : (sd / ld)) * ((theta < 0) ? -1 : 1) * scalar;
-    double right_speed = ((theta > 0) ? (sd / ld) : 1) * ((theta < 0) ? -1 : 1) * scalar;
+    //determine left right
+    double left_speed = ((targetAngle > 0) ? 1 : (sd / ld)) * scalar;
+    double right_speed = ((targetAngle > 0) ? (sd / ld) : 1) * scalar;
 
-    printf("ca: %f\n", inertial.controllerGet());
+    //determine if reverse
 
-    double initAngle = remap(inertial.controllerGet() - theta);
+    if (reversed) {
+        double ts = left_speed;
+
+        left_speed = right_speed * -1;
+        right_speed = ts * -1;
+    }
+
+    //speed constants adjustments should be done
+    printf("left speed: %lf, right speed: %lf\n", left_speed, right_speed); 
+
+//---------------------------------------------
+    //if reversed=true to target(ex 0):
+    //      flip l and R
+    //      * -1 both speeds
+    //else 
+    //      do nothing?
+//------------------------------------------------
+
+    printf("current angle: %lf, target angle: %lf\n", inertial.controllerGet(), targetAngle);
 
     okapi::IterativePosPIDController rotatePID = 
-                okapi::IterativeControllerFactory::posPID((double)1/32.0, 0.000000, 0.00053);
-
+                okapi::IterativeControllerFactory::posPID((double)0.024816, 0.000000, 0.00032); //28, 42
     rotatePID.setTarget(0);
 
-    printf("ls: %lf, rs: %lf\n", reversed ? -right_speed : left_speed, reversed ? -left_speed : right_speed);
+    double initAngle = remap(inertial.controllerGet() - targetAngle);
+    bool a_adj = initAngle > 0;
 
     while (abs(initAngle) >= 4
             || std::max(abs(leftDrive.getActualVelocity()), abs(rightDrive.getActualVelocity())) > 8) {
 
         printf("<offset: %lf\n", initAngle) ;
-        initAngle = remap(inertial.controllerGet() - theta);
+        initAngle = remap(inertial.controllerGet() - targetAngle);
 
         if (initAngle >= 190) {
             printf("uhhhhh this went bad\n");
@@ -288,7 +308,7 @@ void drive_arc(double r, double theta, double scalar, bool reversed) {     //ret
         }
 
         double vel = rotatePID.step(initAngle);
-        drive->getModel()->tank((reversed ? (-right_speed) : (left_speed)) * vel, (reversed ? (-left_speed) : (right_speed)) * vel);
+        drive->getModel()->tank(left_speed * vel * (a_adj ? -1 : 1), right_speed * vel * (a_adj ? -1 : 1));
 
         pros::delay(20);
     }

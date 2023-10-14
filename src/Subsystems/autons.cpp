@@ -17,11 +17,25 @@ void rightPressed() {
     auton_route = AUTON_RIGHT;
 }
 
-void auton_left() {
+void auton_test() {
+#if 0
     //drive_arc(-1.2, 90, 0.8, true);  //turn around goal
 
-    //drive_dis(2, 1);
-     turnToAngle(45);
+    //drive_dis(2, 0.8);
+    for (int i = 0; i < 4; i++) {
+        turnToAngle(45 * i);
+        pros::delay(280);
+    }
+    turnToAngle(0);
+#endif
+
+    drive_arc(0.5, 90, 0.8, false);
+    pros::delay(280);
+    drive_arc(0.5, 0, 0.8, true);
+
+    //turnToAngle(90);
+    //pros::delay(280);
+    //turnToAngle(0);
 }
 
 void auton_right() {
@@ -71,76 +85,64 @@ void auton_right() {
  */
 }
 
-void auton_test() {
-#if 0
-    drive_arc(-3, 30, 0.8);
-    pros::delay(100);
-    wings.set_value(1);
-    drive_arc(-3, 45, 0.8);
-#endif 
+void auton_n_awp_SV2() {
+    intake.moveVelocity(600);
+    pros::delay(160);
 
+    drive_dis(-0.32, 0.88);
+    pros::delay(320);
+    intake.moveVelocity(0); // intake the triball
+
+    drive_dis(1.77, 0.77);
+    drive_arc(1.52, -42, 0.88); //1.6
+    wings.set_state(1); //toggle the wings 
+    pros::delay(160);
+    drive_arc(0.5, -90, 0.88);
+    wings.set_state(0);
+    drive_dis(0.72, 0.8);
+    turnToAngle(130, 0.88);
+    intake.moveVelocity(-600);
+    pros::delay(360);
+    turnToAngle(-60);
+    intake.moveVelocity(0);
+    drive->getModel()->tank(1, 1);
+    pros::delay(1200);
+    drive->getModel()->tank(0, 0);
+    drive_dis(-0.8, 0.8);
+}
+
+
+//working auton, non awp, three triballs, 12 sec
+void auton_n_awp_SV1() {
     intake.moveVelocity(600);
     pros::delay(380);
 
     drive_dis(-0.28, 0.88);
     intake.moveVelocity(0); // inake the triball
 
-    drive_dis(2, 0.8);
+    drive_dis(1.82, 0.77);
     intake.moveVelocity(0);
-    drive_arc(1.6, -45, 0.8); 
-    wings.set_state(1);//toggle the wings 
+    drive_arc(1.6, -42, 0.8); 
+    wings.set_state(1); //toggle the wings 
     pros::delay(450);
     drive_arc(0.5, -90, 0.72);
     pros::delay(200);
     wings.set_state(0);
-    turnToAngle(-51);
+    turnToAngle(-64);       //-59
     drive_dis(1.4, 1);
     drive_dis(-0.8, 0.8);
     turnToAngle(130, 0.8);
     intake.moveVelocity(-480);
     pros::delay(480);
     drive_dis(0.64, 0.8);
-    turnToAngle(-64);
+    turnToAngle(-55);
     intake.moveVelocity(0);
-    //drive_dis(1.7, 1);
     drive->getModel()->tank(1, 1);
-    pros::delay(2800);
+    pros::delay(1600);
     drive->getModel()->tank(0, 0);
     drive_dis(-0.8, 0.8);
-    //drive_arc(1.6, -85, 0.95);
-    // pros::delay(530);
-    // turnToAngle(-77, 1);
-    // wings.set_state(0);
-/*
-    pros::delay(20);
-    turnToAngle(-50); //turn towards goal
-    drive_dis(1, 1); //score two triballs   1.32
-
-    pros::delay(50);
-    drive_dis(-1.2);
-    turnToAngle(8); 
-
-    printf("------------!!!---------\n");
-    drive_arc(-1.2, 90, 0.8, true);  //turn around goal
-    printf("------------------------\n");
-    pros::delay(320);
-    intake.moveVelocity(-240);  //spit out triball
-    pros::delay(250);
-    drive_dis(0.8, 0.88);
-    intake.moveVelocity(0);
-
-    turnToAngle(20);    //go towards second triball
-    intake.moveVelocity(600);
-    drive_dis(-1.62, 0.88);
-    pros::delay(280);
-    intake.moveVelocity(0);
-
-    drive_dis(1, 0.8);
-    turnToAngle(-90, 0.8);
-    wings.set_state(1);
-    drive_arc(1.52, -8, 0.8, true);
-*/
 }
+
 extern okapi::Motor slapper;
 void skills() {
     slapper.moveVelocity(600);
@@ -151,5 +153,6 @@ void skills() {
 void autons() {
     odom_set_zero();        //do not delete
 
-    auton_test();    
+    //auton_n_awp_SV2();    
+    auton_test();
 }   

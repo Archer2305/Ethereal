@@ -25,9 +25,6 @@ inline double remap(double d) {
     return (d <= 180) ? d : (d - 360);
 }
 
-//inline double reflex_convert(double d) {
-
-//}
 //------------------------------------
 
 double to_IMU_heading(double heading);
