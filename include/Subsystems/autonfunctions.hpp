@@ -29,7 +29,7 @@ inline double remap(double d) {
 
 double to_IMU_heading(double heading);
 
-void drive_dis(double, double scalar=1);
+void drive_dis(double, double scalar=1, bool stop=true);
 void turnToAngle(double, double scalar=0.88, bool reversed=false);
 void driveToPoint(double, double, double speed=0.8, bool backward=false);
 

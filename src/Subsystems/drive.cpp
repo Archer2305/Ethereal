@@ -62,9 +62,13 @@ void odom_set_zero() {
     drive->setState(zero_state);
 } 
 
+
+extern okapi::IMU inertial;
 void updateDrive() {
     pros::lcd::set_text(1, std::to_string(drive->getState().y.convert(okapi::foot))); 
     pros::lcd::set_text(2, std::to_string(drive->getState().x.convert(okapi::foot)));
+    
+    pros::lcd::set_text(3, std::to_string(inertial.controllerGet()));
 
     drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), 
             controller.getAnalog((ControllerAnalog::rightX)));
