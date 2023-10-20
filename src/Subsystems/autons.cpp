@@ -217,7 +217,23 @@ void auton_n_awp_SV1() {
 
 extern okapi::Motor slapper;
 void skills() {
+    turnToAngle(20);
+    drive->getModel()->tank(-0.05, 0);
     slapper.moveVelocity(600);
+    //pros::delay(25000);
+    slapper.moveVelocity(0);
+    drive->getModel()->tank(0, 0);
+    drive_dis(0.3, 1);
+    turnToAngle(-15);
+    drive_dis(2, 1);
+    turnToAngle(0);
+    drive_dis(4, 1);
+    wings.set_state(1);
+    drive_arc(2.3, 60);
+    wings.set_state(0);
+    drive->getModel()->tank(1, 1);
+    
+
     //pros::delay(23000);
     //slapper.moveVelocity(0);
     
@@ -226,7 +242,7 @@ void skills() {
 void autons() {
     odom_set_zero();        //do not delete
 
-    auton_n_awp_SV3() ;
+    skills();
     //auton_right();    
     //auton_test();
 }   

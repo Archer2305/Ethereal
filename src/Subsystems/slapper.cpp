@@ -8,7 +8,7 @@ void updateSlapper() {
     
     if (controller.getDigital(BUTTON_SLAPPER) == 1) {
         slapper.moveVoltage(12000); 
-    } else if (controller.getDigital(BUTTON_SLAPPER) == 0){
+    } else if (controller.getDigital(okapi::ControllerDigital::Y) == 0){
         slapper.moveVoltage(0); 
     }
 }
