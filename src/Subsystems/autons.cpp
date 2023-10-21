@@ -168,19 +168,19 @@ void auton_n_awp_SV3() {
     drive->getModel()->tank(0, 0);
     drive_dis(1.28, 0.88);         //~8.5 sec     //-1.75
 
-    turnToAngle(26, 0.90);          //p2
+    turnToAngle(48, 0.90);          //p2
+    drive_dis(-2.3, 0.936);
+    turnToAngle(0, 0.90);          //p2
     intake.moveVelocity(600);
-    drive_dis(-3.75, 0.88);         //-4.2
-//drive_arc
-    pros::delay(230);               //rd
+    drive_dis(-1.6, 0.93);
 
     intake.moveVelocity(0);
-    turnToAngle(-92, 0.88);          //p2           //-90b
-    drive_dis(1.72, 1);              //2.3
-    turnToAngle(180, 0.88);          //p2
+    turnToAngle(-97, 0.90);          //p2           //-90b
+    drive_dis(1.72, 0.78);              //2.3
+    turnToAngle(179, 0.90);          //p2
     intake.moveVelocity(-600);
-    drive_dis(-2, 1);
-    drive_dis(1, 0.8);
+    drive_dis(-2.3, 1);
+    drive_dis(0.8, 0.88);
 }
 //------------------------------------------------------------------------
 
@@ -215,34 +215,56 @@ void auton_n_awp_SV1() {
     drive_dis(-0.8, 0.8);
 }
 
+
+void reset_cata();
+
+
 extern okapi::Motor slapper;
 void skills() {
     turnToAngle(20);
     drive->getModel()->tank(-0.05, 0);
-    slapper.moveVelocity(600);
+    //slapper.moveVelocity(600);
     //pros::delay(25000);
-    slapper.moveVelocity(0);
+    //slapper.moveVelocity(0);
+    //reset_cata();
     drive->getModel()->tank(0, 0);
     drive_dis(0.3, 1);
-    turnToAngle(-15);
-    drive_dis(2, 1);
+    turnToAngle(-20);
+    drive_dis(2, 0.8);
     turnToAngle(0);
-    drive_dis(4, 1);
-    wings.set_state(1);
-    drive_arc(2.3, 60);
+    drive_dis(4.8, 1);
+    drive_arc(2.4, 16, 0.936);    //1.52
+    wings.set_state(1);             //toggle the wings 
+    drive_arc(0.5, 90, 0.9365);      //-93
     wings.set_state(0);
-    drive->getModel()->tank(1, 1);
     
+    for (int i = 0; i < 1; i++) {       //push from sides
+        drive->getModel()->tank(0.8, 0.8);
+        pros::delay(420);
+        drive->getModel()->tank(0, 0);
+        pros::delay(80);
+        drive->getModel()->tank(-0.32, -0.32);
+        pros::delay(480);
+    }
 
+    turnToAngle(164, 0.88);
+    drive_dis(1.6, 0.88, false);    
+    drive_arc(1.2, 90, 0.88);
+    drive_dis(1.6, 0.88); 
+
+    turnToAngle(0, 0.935);
+    wings.set_state(1);
+    drive_dis(2.3, 1);
+    wings.set_state(0);
+    drive_dis(-1.6, 0.8);
     //pros::delay(23000);
     //slapper.moveVelocity(0);
-    
 }
 
 void autons() {
     odom_set_zero();        //do not delete
 
-    skills();
-    //auton_right();    
+    //skills();
+    auton_n_awp_SV3();    
     //auton_test();
 }   
